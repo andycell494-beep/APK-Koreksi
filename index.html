@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>AI Smart Grading - Koreksi Otomatis Mobile</title>
+    <meta name="description" content="Aplikasi Mobile-First PWA AI Smart Grading untuk guru dan pendidik: periksa lembar jawaban murid via kamera HP, analisis nilai otomatis, verifikasi skor, dan ekspor hasil." />
+    <meta property="og:title" content="AI Smart Grading - Koreksi Otomatis Mobile" />
+    <meta property="og:description" content="Aplikasi Mobile-First PWA AI Smart Grading untuk guru dan pendidik: periksa lembar jawaban murid via kamera HP, analisis nilai otomatis, verifikasi skor, dan ekspor hasil." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#4f46e5" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="SmartGrade" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <script>
+      (function() {
+        // Intercept Vite HMR WebSocket in AI Studio cloud preview environment
+        const RealWS = window.WebSocket;
+        if (!RealWS) return;
+        function MockViteWS(url, protocols) {
+          const isViteHmr = (typeof protocols === 'string' && protocols === 'vite-hmr') ||
+                            (Array.isArray(protocols) && protocols.includes('vite-hmr')) ||
+                            (typeof url === 'string' && (url.includes('vite-hmr') || url.includes('/@vite/client')));
+          if (isViteHmr) {
+            const listeners = {};
+            const mock = {
+              CONNECTING: 0,
+              OPEN: 1,
+              CLOSING: 2,
+              CLOSED: 3,
+              readyState: 1,
+              bufferedAmount: 0,
+              extensions: '',
+              protocol: 'vite-hmr',
+              url: url,
+              binaryType: 'blob',
+              send: function() {},
+              close: function() { mock.readyState = 3; },
+              addEventListener: function(event, handler) {
+                listeners[event] = listeners[event] || [];
+                listeners[event].push(handler);
+              },
+              removeEventListener: function(event, handler) {
+                if (listeners[event]) {
+                  listeners[event] = listeners[event].filter(function(h) { return h !== handler; });
+                }
+              },
+              dispatchEvent: function() { return true; },
+              onopen: null,
+              onclose: null,
+              onerror: null,
+              onmessage: null
+            };
+            setTimeout(function() {
+              if (typeof mock.onopen === 'function') mock.onopen({ type: 'open' });
+              if (listeners['open']) {
+                listeners['open'].forEach(function(fn) { fn({ type: 'open' }); });
+              }
+            }, 30);
+            return mock;
+          }
+          return new RealWS(url, protocols);
+        }
+        MockViteWS.prototype = RealWS.prototype;
+        MockViteWS.CONNECTING = RealWS.CONNECTING;
+        MockViteWS.OPEN = RealWS.OPEN;
+        MockViteWS.CLOSING = RealWS.CLOSING;
+        MockViteWS.CLOSED = RealWS.CLOSED;
+        window.WebSocket = MockViteWS;
+
+        // Suppress any stray WebSocket errors from console
+        window.addEventListener('error', function(e) {
+          if (e.message && (e.message.includes('WebSocket') || e.message.includes('ws'))) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+          }
+        });
+        window.addEventListener('unhandledrejection', function(e) {
+          if (e.reason && (String(e.reason).includes('WebSocket') || String(e.reason).includes('ws'))) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+          }
+        });
+      })();
+    </script>
+  </head>
+  <body class="bg-slate-50 text-slate-900 antialiased selection:bg-indigo-500 selection:text-white min-h-screen overflow-x-hidden">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

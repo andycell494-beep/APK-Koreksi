@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+@layer base {
+  html, body {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none;
+  }
+}
+
+/* Custom safe-area utilities for notched mobile phones */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 1rem);
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0rem);
+}
+
+/* Print Styles for Official School Reports */
+@page {
+  size: A4 portrait;
+  margin: 12mm 15mm 12mm 15mm;
+}
+
+@media print {
+  /* Hide non-printable UI components */
+  nav,
+  button,
+  .no-print,
+  .print\:hidden,
+  [data-no-print] {
+    display: none !important;
+  }
+
+  html, body, #root {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 10pt !important;
+    line-height: 1.35 !important;
+    height: auto !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  main {
+    max-width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Force display of printable container */
+  .printable-document {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  /* Formal borders for printed tables */
+  .printable-document table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin-top: 8px !important;
+    margin-bottom: 12px !important;
+    page-break-inside: auto !important;
+  }
+
+  .printable-document tr {
+    page-break-inside: avoid !important;
+    page-break-after: auto !important;
+  }
+
+  .printable-document th,
+  .printable-document td {
+    border: 1px solid #334155 !important;
+    padding: 5px 7px !important;
+    font-size: 8.5pt !important;
+    color: #0f172a !important;
+  }
+
+  .printable-document th {
+    background-color: #f1f5f9 !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+  }
+
+  .page-break {
+    page-break-before: always;
+  }
+}

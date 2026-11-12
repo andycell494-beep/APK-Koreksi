@@ -1,0 +1,10 @@
+{
+  "name": "AI Smart Grading - Koreksi Otomatis Mobile",
+  "description": "Aplikasi Mobile-First PWA AI Smart Grading untuk guru dan pendidik: periksa lembar jawaban murid via kamera HP, analisis nilai otomatis, verifikasi skor, dan ekspor hasil.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
